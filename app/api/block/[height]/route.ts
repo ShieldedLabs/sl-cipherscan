@@ -89,6 +89,7 @@ export async function GET(
 async function getCurrentBlockHeight(): Promise<number | null> {
   const rpcUrl = process.env.ZCASH_RPC_URL || 'http://localhost:18232';
   const rpcCookie = process.env.ZCASH_RPC_COOKIE;
+  // console.log(`getCurrentBlockHeight: ${rpcUrl}, ${rpcCookie}`);
 
   const headers: HeadersInit = {
     'Content-Type': 'application/json',

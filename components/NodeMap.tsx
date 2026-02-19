@@ -161,6 +161,7 @@ export function NodeMap() {
     const fetchNodes = async () => {
       try {
         const apiUrl = getApiUrl();
+        // console.log(`${apiUrl}/api/network/nodes`);
         const [nodesRes, statsRes] = await Promise.all([
           fetch(`${apiUrl}/api/network/nodes`),
           fetch(`${apiUrl}/api/network/nodes/stats`),

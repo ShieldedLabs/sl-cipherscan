@@ -111,6 +111,7 @@ async function fetchNetworkStatsOptimized() {
     const networkInfo = await callZebraRPC('getnetworkinfo').catch(() => null);
     const peerInfo = await callZebraRPC('getpeerinfo').catch(() => []);
     const blockchainInfo = await callZebraRPC('getblockchaininfo').catch(() => null);
+    // console.log(peerInfo);
 
     // Extract peer count and network details
     const peerCount = networkInfo?.connections || (Array.isArray(peerInfo) ? peerInfo.length : 0);

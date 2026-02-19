@@ -68,7 +68,10 @@ async function fetchRecentBlocks(limit: number) {
       }),
     });
 
+   // console.log(`heightRes: ${heightResponse}`);
     const heightData = await heightResponse.json();
+
+    // console.log(`heightData: ${heightData}`);
 
     if (heightData.error) {
       throw new Error(heightData.error.message);
