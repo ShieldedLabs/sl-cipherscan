@@ -30,7 +30,7 @@ export async function GET(
     const currentHeight = usePostgresApi()
       ? await getCurrentBlockHeightFromPostgres()
       : await getCurrentBlockHeight();
-    const confirmations = currentHeight ? currentHeight - height + 1 : 1;
+    const confirmations = currentHeight && currentHeight > height ? currentHeight - height : 0;
 
     // Use PostgreSQL API for testnet, RPC for mainnet
     const block = usePostgresApi()
