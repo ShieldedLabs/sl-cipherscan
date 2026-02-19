@@ -101,6 +101,17 @@ export default function BlockPage() {
   const [showMoreDetails, setShowMoreDetails] = useState(false);
   const txSectionRef = useRef<HTMLDivElement>(null);
 
+  const [tick, setTick] = useState(0);
+
+  // Timer effect: runs once (or when nSeconds changes)
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTick(prev => prev + 1);
+    }, 10 * 1000);
+
+    return () => clearInterval(id);
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -228,7 +239,7 @@ export default function BlockPage() {
     };
 
     fetchData();
-  }, [height]);
+  }, [height, tick]);
 
   const scrollToTransactions = () => {
     txSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
