@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui';
 interface Block {
   height: number;
   hash: string;
+  finality: string;
   timestamp: number;
   transactions: number;
   size: number;
@@ -93,20 +94,27 @@ export const RecentBlocks = memo(function RecentBlocks({ initialBlocks = [] }: R
               <div className="flex-1">
                 <div className="flex items-center space-x-3 mb-2">
                   <span className="w-6 h-6 flex items-center justify-center rounded-md bg-cipher-cyan/10">
-                    <svg className="w-4 h-4 text-cipher-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className={`w-4 h-4 text-cipher-${
+                      block.finality == "Finalized" ? "cyan" : (block.finality == "NotYetFinalized" ? "orange" : "muted")
+                    }`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
                   </span>
-                  <h3 className="text-base sm:text-lg font-bold font-mono text-cipher-cyan group-hover:text-cipher-green transition-colors">
+                  <h3 className={`text-base sm:text-lg font-bold font-mono text-cipher-${
+                      block.finality == "Finalized" ? "cyan" : (block.finality == "NotYetFinalized" ? "orange" : "muted")
+                  } group-hover:text-cipher-green transition-colors`}>
                     #{block.height}
                   </h3>
-                  <Badge color="cyan">
+                  <Badge color={block.finality == "Finalized" ? "cyan" : (block.finality == "NotYetFinalized" ? "orange" : "muted")}>
                     {block.transactions} TX
                   </Badge>
                 </div>
                 <div className="text-xs text-muted font-mono">
                   <span className="opacity-50">Hash: </span>
                   <code className="break-all">{block.hash.slice(0, 8)}...{block.hash.slice(-8)}</code>
+                </div>
+                <div className="text-xs text-muted font-mono">
+                  <code className="break-all">{block.finality}</code>
                 </div>
               </div>
               <div className="text-left sm:text-right sm:ml-6">

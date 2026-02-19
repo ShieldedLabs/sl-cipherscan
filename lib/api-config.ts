@@ -43,7 +43,7 @@ export const API_CONFIG = {
   RPC_COOKIE: process.env.ZCASH_RPC_COOKIE,
 
   // Use PostgreSQL API for both mainnet and testnet
-  USE_POSTGRES_API: true,
+  USE_POSTGRES_API: false,
 };
 
 /**
@@ -59,12 +59,12 @@ export function getApiUrl(): string {
  * Check if we should use PostgreSQL API (server-side for API routes)
  */
 export function usePostgresApi(): boolean {
-  return true; // Always use PostgreSQL API for both mainnet and testnet
+  return false; // Always use PostgreSQL API for both mainnet and testnet
 }
 
 /**
  * Check if we should use PostgreSQL API (client-side safe)
  */
 export function usePostgresApiClient(): boolean {
-  return true; // Always use PostgreSQL API for both mainnet and testnet
+  return false; // Always use PostgreSQL API for both mainnet and testnet
 }

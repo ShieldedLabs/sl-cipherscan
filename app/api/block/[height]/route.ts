@@ -154,6 +154,21 @@ async function fetchBlockByHeight(height: number) {
 
     const blockHash = hashData.result;
 
+    // Get block finality
+    const finalityResponse = await fetch(rpcUrl, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        jsonrpc: '1.0',
+        id: `finality-${blockHash}`,
+        method: 'get_tfl_block_finality_from_hash',
+        params: [blockHash],
+      }),
+    });
+
+    const finalityData = await finalityResponse.json();
+    const finality = finalityData.result;
+
     // Get block details
     const blockResponse = await fetch(rpcUrl, {
       method: 'POST',
@@ -173,6 +188,7 @@ async function fetchBlockByHeight(height: number) {
     }
 
     const block = blockData.result;
+    block.finality = finality;
 
     // Calculate total fees (sum of all tx fees in the block)
     let totalFees = 0;
@@ -242,6 +258,7 @@ async function fetchBlockByHeight(height: number) {
       hash: block.hash,
       timestamp: block.time,
       transactions: block.tx || [],
+      finality: block.finality || "",
       transactionCount: block.tx ? block.tx.length : 0,
       size: block.size,
       difficulty: block.difficulty,

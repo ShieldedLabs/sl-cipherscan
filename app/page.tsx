@@ -7,6 +7,7 @@ import { API_CONFIG } from '@/lib/api-config';
 interface Block {
   height: number;
   hash: string;
+  finality: string;
   timestamp: number;
   transactions: number;
   size: number;

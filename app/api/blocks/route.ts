@@ -96,6 +96,21 @@ async function fetchRecentBlocks(limit: number) {
       const hashData = await hashResponse.json();
       const blockHash = hashData.result;
 
+      // Get block hash
+      const finalityResponse = await fetch(rpcUrl, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          jsonrpc: '1.0',
+          id: `finality-${blockHash}`,
+          method: 'get_tfl_block_finality_from_hash',
+          params: [blockHash],
+        }),
+      });
+
+      const finalityData = await finalityResponse.json();
+      const finality = finalityData.result;
+
       // Get block details
       const blockResponse = await fetch(rpcUrl, {
         method: 'POST',
@@ -115,6 +130,7 @@ async function fetchRecentBlocks(limit: number) {
         blocks.push({
           height: blockHeight,
           hash: blockHash,
+          finality: finality,
           timestamp: block.time,
           transactions: block.tx ? block.tx.length : 0,
           size: block.size,

@@ -10,6 +10,7 @@ import { CURRENCY } from '@/lib/config';
 import { usePostgresApiClient, getApiUrl } from '@/lib/api-config';
 import { Card, CardHeader, CardBody } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
+import { getCurrentBlockHeight } from '@/app/api/block/[height]/route';
 
 interface BlockData {
   height: number;
@@ -17,6 +18,7 @@ interface BlockData {
   timestamp: number;
   transactions: any[];
   transactionCount: number;
+  finality: string;
   size: number;
   difficulty: number;
   confirmations: number;
@@ -199,6 +201,7 @@ export default function BlockPage() {
             transactions: transformedTransactions,
             transactionCount: blockData.transactionCount || transformedTransactions.length,
             size: parseInt(blockData.size),
+            finality: blockData.finality,
             difficulty: parseFloat(blockData.difficulty),
             confirmations: parseInt(blockData.confirmations),
             previousBlockHash: blockData.previous_block_hash || blockData.previousBlockHash,
@@ -417,6 +420,17 @@ export default function BlockPage() {
               </span>
             }
             tooltip="Number of blocks mined after this one (6+ confirmations = secure)"
+          />
+
+          <InfoRow
+            icon={Icons.Clock}
+            label="Finality"
+            value={
+              <span className={data.finality == "Finalized" ? "cyan" : (data.finality == "NotYetFinalized" ? "orange" : "muted")}>
+                {data.finality}
+              </span>
+            }
+            tooltip="Finality status of block"
           />
 
           <InfoRow
